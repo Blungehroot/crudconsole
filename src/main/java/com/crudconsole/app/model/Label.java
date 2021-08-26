@@ -2,8 +2,10 @@ package com.crudconsole.app.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Label {
+public class Label implements Serializable {
     private Long id;
     private String name;
 }
