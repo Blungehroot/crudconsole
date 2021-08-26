@@ -1,4 +1,6 @@
 package com.crudconsole.app.repository;
 
-public class LabelRepository {
+import com.crudconsole.app.model.Label;
+
+public interface LabelRepository extends GenericRepository<Label, Long>{
 }
