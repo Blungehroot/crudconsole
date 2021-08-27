@@ -10,7 +10,7 @@ public interface GenericRepository<T, ID> {
 
     void save(T t);
 
-    T update(T t);
+    void update(T t);
 
     void delete(ID id);
 }
