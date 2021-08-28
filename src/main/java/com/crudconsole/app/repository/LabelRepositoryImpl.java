@@ -21,7 +21,6 @@ public class LabelRepositoryImpl implements LabelRepository {
         List<Label> labels = gson.fromJson(labelsStrings, new TypeToken<List<Label>>() {
         }.getType());
         Label label = labels.stream().filter(l -> l.getId().equals(id)).findAny().get();
-        System.out.println(label);
         return label;
     }
 
@@ -58,15 +57,5 @@ public class LabelRepositoryImpl implements LabelRepository {
         labels.removeIf(label -> label.getId().equals(id));
         String jsonString = gson.toJson(labels);
         FileHelpers.WriteInFile(jsonString, LABEL_FILE);
-    }
-
-    public static void main(String[] args) {
-        Label label = new Label();
-        Label label2 = new Label();
-        label.setName("Kek");
-        label2.setName("Kek2");
-        LabelRepositoryImpl labelRepository = new LabelRepositoryImpl();
-        labelRepository.save(label);
-        labelRepository.save(label2);
     }
 }

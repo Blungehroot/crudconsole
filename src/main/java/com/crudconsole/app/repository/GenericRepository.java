@@ -1,10 +1,12 @@
 package com.crudconsole.app.repository;
 
+import com.crudconsole.app.model.Label;
+
 import java.util.List;
 
 public interface GenericRepository<T, ID> {
 
-    T getById(ID id);
+    Label getById(ID id);
 
     List<T> getAll();
 

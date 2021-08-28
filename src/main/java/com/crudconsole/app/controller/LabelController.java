@@ -21,7 +21,9 @@ public class LabelController {
         return gson.toJson(labelRepository.getById(id));
     }
 
-    public void create(Label label) {
+    public void create(String name) {
+        Label label = new Label();
+        label.setName(name);
         labelRepository.save(label);
     }
 
