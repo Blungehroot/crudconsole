@@ -32,7 +32,6 @@ public class LabelRepositoryImpl implements LabelRepository {
 
     public List<Label> getAll() {
         String labelsStrings = FileHelpers.readFile(LABEL_FILE);
-        System.out.println(labelsStrings);
         return gson.fromJson(labelsStrings, new TypeToken<List<Label>>() {
         }.getType());
     }
