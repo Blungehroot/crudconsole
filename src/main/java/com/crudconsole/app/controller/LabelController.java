@@ -27,7 +27,10 @@ public class LabelController {
         labelRepository.save(label);
     }
 
-    public void update(Label label) {
+    public void update(Long id, String name) {
+        Label label = new Label();
+        label.setId(id);
+        label.setName(name);
         labelRepository.update(label);
     }
 

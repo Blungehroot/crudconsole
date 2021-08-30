@@ -8,6 +8,8 @@ import com.google.gson.reflect.TypeToken;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @NoArgsConstructor
@@ -16,12 +18,16 @@ public class LabelRepositoryImpl implements LabelRepository {
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    private Long generateMaxId(List<Label> allExistingLabels) {
+        Long id = Collections.max(allExistingLabels, Comparator.comparing(l -> l.getId())).getId();
+        return id + 1;
+    }
+
     public Label getById(Long id) {
         String labelsStrings = FileHelpers.readFile(LABEL_FILE);
         List<Label> labels = gson.fromJson(labelsStrings, new TypeToken<List<Label>>() {
         }.getType());
-        Label label = labels.stream().filter(l -> l.getId().equals(id)).findAny().get();
-        return label;
+        return labels.stream().filter(l -> l.getId().equals(id)).findAny().get();
     }
 
     public List<Label> getAll() {
@@ -35,10 +41,12 @@ public class LabelRepositoryImpl implements LabelRepository {
         String labelsStrings = FileHelpers.readFile(LABEL_FILE);
         List<Label> labels = new ArrayList<>();
         if (labelsStrings.isEmpty()) {
+            label.setId(1L);
             labels.add(label);
         } else {
             labels = gson.fromJson(labelsStrings, new TypeToken<List<Label>>() {
             }.getType());
+            label.setId(generateMaxId(labels));
             labels.add(label);
         }
         String jsonString = gson.toJson(labels);
@@ -46,8 +54,13 @@ public class LabelRepositoryImpl implements LabelRepository {
     }
 
     public void update(Label label) {
-        delete(label.getId());
-        save(label);
+        String labelsStrings = FileHelpers.readFile(LABEL_FILE);
+        List<Label> labels = gson.fromJson(labelsStrings, new TypeToken<List<Label>>() {
+        }.getType());
+        Label label1 = labels.stream().filter(l -> l.getId().equals(label.getId())).findAny().get();
+        label1.setName(label.getName());
+        String jsonString = gson.toJson(labels);
+        FileHelpers.WriteInFile(jsonString, LABEL_FILE);
     }
 
     public void delete(Long id) {

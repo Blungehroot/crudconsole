@@ -10,10 +10,8 @@ public class ConsoleRunner {
 
     private Scanner sc = new Scanner(System.in);
     private static final String msg = "Select action:\n" +
-            "1. Create label.\n" +
-            "2. Display all labels\n" +
-            "3. Display selected label\n" +
-            "4. Exit.";
+            "1. Actions with labels.\n" +
+            "2. Exit.";
 
     public ConsoleRunner() {
         LabelRepositoryImpl labelRepository = new LabelRepositoryImpl();
@@ -29,18 +27,10 @@ public class ConsoleRunner {
             switch (action)
             {
                 case "1":
-                    labelView.create();
+                    labelView.show();
                     System.out.println(msg);
                     break;
                 case "2":
-                    labelView.printAll();
-                    System.out.println(msg);
-                    break;
-                case "3":
-                    labelView.printSelected();
-                    System.out.println(msg);
-                    break;
-                case "4":
                     isExit = true;
                     break;
                 default:
