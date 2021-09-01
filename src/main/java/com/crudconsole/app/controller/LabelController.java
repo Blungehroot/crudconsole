@@ -21,20 +21,20 @@ public class LabelController {
         return gson.toJson(labelRepository.getById(id));
     }
 
-    public void create(String name) {
+    public Label create(String name) {
         Label label = new Label();
         label.setName(name);
-        labelRepository.save(label);
+        return labelRepository.save(label);
     }
 
-    public void update(Long id, String name) {
+    public Label update(Long id, String name) {
         Label label = new Label();
         label.setId(id);
         label.setName(name);
-        labelRepository.update(label);
+        return labelRepository.update(label);
     }
 
     public void delete(Long id) {
-        labelRepository.delete(id);
+        labelRepository.deleteById(id);
     }
 }

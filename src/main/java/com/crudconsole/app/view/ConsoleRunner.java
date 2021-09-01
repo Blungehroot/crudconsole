@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class ConsoleRunner {
     LabelView labelView;
-    PostView postView;
+    //PostView postView;
 
     private Scanner sc = new Scanner(System.in);
     private static final String msg = "Select action:\n" +
@@ -24,7 +24,7 @@ public class ConsoleRunner {
 
         PostRepositoryImpl postRepository = new PostRepositoryImpl();
         PostController postController = new PostController(postRepository);
-        postView = new PostView(postController, sc);
+        //postView = new PostView(postController, sc);
     }
 
     public void run()  {
@@ -38,10 +38,10 @@ public class ConsoleRunner {
                     labelView.show();
                     System.out.println(msg);
                     break;
-                case "2":
+                /*case "2":
                     postView.show();
                     System.out.println(msg);
-                    break;
+                    break;*/
                 case "3":
                     isExit = true;
                     break;

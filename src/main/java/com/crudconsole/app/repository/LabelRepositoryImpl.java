@@ -36,7 +36,7 @@ public class LabelRepositoryImpl implements LabelRepository {
         }.getType());
     }
 
-    public void save(Label label) {
+    public Label save(Label label) {
         String labelsStrings = FileHelpers.readFile(LABEL_FILE);
         List<Label> labels = new ArrayList<>();
         if (labelsStrings.isEmpty()) {
@@ -50,9 +50,10 @@ public class LabelRepositoryImpl implements LabelRepository {
         }
         String jsonString = gson.toJson(labels);
         FileHelpers.WriteInFile(jsonString, LABEL_FILE);
+        return label;
     }
 
-    public void update(Label label) {
+    public Label update(Label label) {
         String labelsStrings = FileHelpers.readFile(LABEL_FILE);
         List<Label> labels = gson.fromJson(labelsStrings, new TypeToken<List<Label>>() {
         }.getType());
@@ -60,9 +61,10 @@ public class LabelRepositoryImpl implements LabelRepository {
         label1.setName(label.getName());
         String jsonString = gson.toJson(labels);
         FileHelpers.WriteInFile(jsonString, LABEL_FILE);
+        return label1;
     }
 
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         String labelsStrings = FileHelpers.readFile(LABEL_FILE);
         List<Label> labels = gson.fromJson(labelsStrings, new TypeToken<List<Label>>() {
         }.getType());
