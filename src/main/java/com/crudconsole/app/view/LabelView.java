@@ -54,12 +54,12 @@ public class LabelView {
         System.out.println("Input label id: ");
         String id = sc.next();
         System.out.println(displayTargetMsg);
-        labelController.getById(Long.valueOf(id));
+        System.out.println(labelController.getById(Long.valueOf(id)));
     }
 
     void printAll() {
         System.out.println(displayAllMsg);
-        labelController.getAll();
+        System.out.println(labelController.getAll());
     }
 
     void show() {
@@ -67,8 +67,7 @@ public class LabelView {
         System.out.println(menu);
         while (true) {
             String action = sc.next();
-            switch (action)
-            {
+            switch (action) {
                 case "1":
                     create();
                     System.out.println(menu);
