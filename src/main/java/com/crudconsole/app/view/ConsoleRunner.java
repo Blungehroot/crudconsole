@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class ConsoleRunner {
     private final LabelView labelView;
-    //private final PostView postView;
+    private final PostView postView;
 
     private Scanner sc = new Scanner(System.in);
     private static final String msg = "Select action:\n" +
@@ -21,9 +21,8 @@ public class ConsoleRunner {
         LabelController labelController = new LabelController();
         labelView = new LabelView(labelController, sc);
 
-        GsonPostRepositoryImpl postRepository = new GsonPostRepositoryImpl();
-        PostController postController = new PostController(postRepository);
-        //postView = new PostView(postController, sc);
+        PostController postController = new PostController();
+        postView = new PostView(postController, sc);
     }
 
     public void run()  {
@@ -37,10 +36,10 @@ public class ConsoleRunner {
                     labelView.show();
                     System.out.println(msg);
                     break;
-                /*case "2":
+                case "2":
                     postView.show();
                     System.out.println(msg);
-                    break;*/
+                    break;
                 case "3":
                     isExit = true;
                     break;

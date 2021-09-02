@@ -23,49 +23,56 @@ public class GsonPostRepositoryImpl {
         return id + 1;
     }
 
-    public Post getById(Long id) {
-        String postsStrings = FileHelpers.readFile(POST_FILE);
-        List<Post> posts = gson.fromJson(postsStrings, new TypeToken<List<Post>>() {
-        }.getType());
-        return posts.stream().filter(p -> p.getId().equals(id)).findAny().orElse(null);
-    }
-
-    public List<Post> getAll() {
-        String postsStrings = FileHelpers.readFile(POST_FILE);
+    private List<Post> getPostsFromJson(String postsStrings) {
         return gson.fromJson(postsStrings, new TypeToken<List<Post>>() {
         }.getType());
     }
 
-    public void save(Post post) {
+    public Post getById(Long id) {
+        String postsStrings = FileHelpers.readFile(POST_FILE);
+        return getPostsFromJson(postsStrings)
+                .stream()
+                .filter(p -> p.getId().equals(id))
+                .findAny()
+                .orElse(null);
+    }
+
+    public List<Post> getAll() {
+        String postsStrings = FileHelpers.readFile(POST_FILE);
+        return getPostsFromJson(postsStrings);
+    }
+
+    public Post save(Post post) {
         String postsStrings = FileHelpers.readFile(POST_FILE);
         List<Post> posts = new ArrayList<>();
         if (postsStrings.isEmpty()) {
             post.setId(1L);
             posts.add(post);
         } else {
-            posts = gson.fromJson(postsStrings, new TypeToken<List<Post>>() {
-            }.getType());
+            posts = getPostsFromJson(postsStrings);
             post.setId(generateMaxId(posts));
             posts.add(post);
         }
         String jsonString = gson.toJson(posts);
         FileHelpers.writeInFile(jsonString, POST_FILE);
+        return post;
     }
 
-    public void update(Post post) {
+    public Post update(Post post) {
         String postsStrings = FileHelpers.readFile(POST_FILE);
-        List<Post> labels = gson.fromJson(postsStrings, new TypeToken<List<Post>>() {
-        }.getType());
-        Post post1 = labels.stream().filter(l -> l.getId().equals(post.getId())).findAny().orElse(null);
+        List<Post> posts = getPostsFromJson(postsStrings);
+        Post post1 = posts.stream().filter(p -> p.getId().equals(post.getId())).findAny().orElse(null);
         post1.setName(post.getName());
-        String jsonString = gson.toJson(labels);
+        post1.setContent(post.getContent());
+        post1.setLabels(post.getLabels());
+        String jsonString = gson.toJson(posts);
         FileHelpers.writeInFile(jsonString, POST_FILE);
+        return post1;
     }
 
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         String postsStrings = FileHelpers.readFile(POST_FILE);
-        List<Post> posts = gson.fromJson(postsStrings, new TypeToken<List<Post>>() {
-        }.getType());
+        List<Post> posts = getPostsFromJson(postsStrings);
         posts.removeIf(post -> post.getId().equals(id));
         String jsonString = gson.toJson(posts);
         FileHelpers.writeInFile(jsonString, POST_FILE);
