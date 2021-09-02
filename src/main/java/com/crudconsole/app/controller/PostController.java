@@ -2,46 +2,69 @@ package com.crudconsole.app.controller;
 
 import com.crudconsole.app.model.Label;
 import com.crudconsole.app.model.Post;
-import com.crudconsole.app.repository.PostRepositoryImpl;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.crudconsole.app.repository.gson.GsonLabelRepositoryImpl;
+import com.crudconsole.app.repository.gson.GsonPostRepositoryImpl;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PostController {
-    PostRepositoryImpl postRepository;
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final GsonPostRepositoryImpl gsonPostRepository;
+    private final GsonLabelRepositoryImpl gsonLabelRepository;
 
-    public PostController(PostRepositoryImpl postRepository) {
-        this.postRepository = postRepository;
+    private List<Label> getListLabelsById(String ids) {
+        List<Label> allExistLabels = gsonLabelRepository.getAll();
+        List<Label> temp;
+        String[] idsArray = ids.split(",");
+        int size = idsArray.length;
+        Long[] intIds = new Long[size];
+
+        for (int i = 0; i < size; i++) {
+            intIds[i] = Long.parseLong(idsArray[i]);
+        }
+
+        List<Long> listOfIds = Arrays.asList(intIds);
+        temp = allExistLabels
+                .stream()
+                .filter(label -> listOfIds.contains(label.getId()))
+                .collect(Collectors.toList());
+        return temp;
+
     }
 
-    public String getAll() {
-        return gson.toJson(postRepository.getAll());
+    public PostController() {
+        gsonPostRepository = new GsonPostRepositoryImpl();
+        gsonLabelRepository = new GsonLabelRepositoryImpl();
     }
 
-    public String getById(Long id) {
-        return gson.toJson(postRepository.getById(id));
+    public List<Post> getAll() {
+        return gsonPostRepository.getAll();
     }
 
-    public void create(String name, String content, List<Label> labels) {
+    public Post getById(Long id) {
+        return gsonPostRepository.getById(id);
+    }
+
+    public Post create(String name, String content, String labelsIds) {
         Post post = new Post();
         post.setName(name);
         post.setContent(content);
-        post.setLabels(labels);
-        postRepository.save(post);
+        post.setLabels(getListLabelsById(labelsIds));
+        return gsonPostRepository.save(post);
     }
 
-    public void update(Long id, String name, String content, List<Label> labels) {
+    public Post update(Long id, String name, String content, String labelsIds) {
         Post post = new Post();
         post.setId(id);
         post.setName(name);
         post.setContent(content);
-        post.setLabels(labels);
-        postRepository.update(post);
+        post.setLabels(null);
+        post.setLabels(getListLabelsById(labelsIds));
+        return gsonPostRepository.update(post);
     }
 
     public void delete(Long id) {
-        postRepository.delete(id);
+        gsonPostRepository.deleteById(id);
     }
 }

@@ -2,14 +2,14 @@ package com.crudconsole.app.view;
 
 import com.crudconsole.app.controller.LabelController;
 import com.crudconsole.app.controller.PostController;
-import com.crudconsole.app.repository.LabelRepositoryImpl;
-import com.crudconsole.app.repository.PostRepositoryImpl;
+import com.crudconsole.app.repository.gson.GsonLabelRepositoryImpl;
+import com.crudconsole.app.repository.gson.GsonPostRepositoryImpl;
 
 import java.util.Scanner;
 
 public class ConsoleRunner {
-    LabelView labelView;
-    //PostView postView;
+    private final LabelView labelView;
+    private final PostView postView;
 
     private Scanner sc = new Scanner(System.in);
     private static final String msg = "Select action:\n" +
@@ -18,13 +18,11 @@ public class ConsoleRunner {
             "3. Exit.";
 
     public ConsoleRunner() {
-        LabelRepositoryImpl labelRepository = new LabelRepositoryImpl();
-        LabelController labelController = new LabelController(labelRepository);
+        LabelController labelController = new LabelController();
         labelView = new LabelView(labelController, sc);
 
-        PostRepositoryImpl postRepository = new PostRepositoryImpl();
-        PostController postController = new PostController(postRepository);
-        //postView = new PostView(postController, sc);
+        PostController postController = new PostController();
+        postView = new PostView(postController, sc);
     }
 
     public void run()  {
@@ -38,10 +36,10 @@ public class ConsoleRunner {
                     labelView.show();
                     System.out.println(msg);
                     break;
-                /*case "2":
+                case "2":
                     postView.show();
                     System.out.println(msg);
-                    break;*/
+                    break;
                 case "3":
                     isExit = true;
                     break;

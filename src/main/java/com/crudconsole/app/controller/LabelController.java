@@ -1,40 +1,39 @@
 package com.crudconsole.app.controller;
 
 import com.crudconsole.app.model.Label;
-import com.crudconsole.app.repository.LabelRepositoryImpl;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.crudconsole.app.repository.gson.GsonLabelRepositoryImpl;
+
+import java.util.List;
 
 public class LabelController {
-    LabelRepositoryImpl labelRepository;
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final GsonLabelRepositoryImpl gsonLabelRepository;
 
-    public LabelController(LabelRepositoryImpl labelRepository) {
-        this.labelRepository = labelRepository;
+    public LabelController() {
+        gsonLabelRepository = new GsonLabelRepositoryImpl();
     }
 
-    public String getAll() {
-        return gson.toJson(labelRepository.getAll());
+    public List<Label> getAll() {
+        return gsonLabelRepository.getAll();
     }
 
-    public String getById(Long id) {
-        return gson.toJson(labelRepository.getById(id));
+    public Label getById(Long id) {
+        return gsonLabelRepository.getById(id);
     }
 
     public Label create(String name) {
         Label label = new Label();
         label.setName(name);
-        return labelRepository.save(label);
+        return gsonLabelRepository.save(label);
     }
 
     public Label update(Long id, String name) {
         Label label = new Label();
         label.setId(id);
         label.setName(name);
-        return labelRepository.update(label);
+        return gsonLabelRepository.update(label);
     }
 
     public void delete(Long id) {
-        labelRepository.deleteById(id);
+        gsonLabelRepository.deleteById(id);
     }
 }

@@ -1,14 +1,17 @@
 package com.crudconsole.app.view;
 
 import com.crudconsole.app.controller.LabelController;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.Scanner;
 
 public class LabelView {
-    LabelController labelController;
-    Scanner sc;
+    private final LabelController labelController;
+    private final Scanner sc;
+    private final Gson gson;
 
-    private final String menu = "Select action on label:\n" +
+    private static final String menu = "Select action on label:\n" +
             "1. Add new label\n" +
             "2. Display all labels\n" +
             "3. Display selected label\n" +
@@ -16,50 +19,54 @@ public class LabelView {
             "5. Edit label\n" +
             "6. Exit";
 
-    private final String createMsg = "Creating label.\n";
-    private final String editMsg = "Edit label.\n";
-    private final String displayAllMsg = "Display all labels\n";
-    private final String displayTargetMsg = "Display selected label.\n";
-    private final String deleteMsg = "Delete label.\n";
+    private static final String CREATE_MSG = "Creating label.\n";
+    private static final String EDIT_MSG = "Edit label.\n";
+    private static final String DISPLAY_ALL_MSG = "Display all labels\n";
+    private static final String DISPLAY_TARGET_MSG = "Display selected label.\n";
+    private static final String DELETE_MSG = "Delete label.\n";
+    private static final String INPUT_NAME_MSG = "Input label name";
+    private static final String INPUT_ID_MSG = "Input label id: ";
+    private static final String INPUT_ID_TO_DELETE = "Input id to delete label: ";
 
     public LabelView(LabelController labelController, Scanner sc) {
         this.labelController = labelController;
         this.sc = sc;
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
     void create() {
-        System.out.println("Input label name");
+        System.out.println(INPUT_NAME_MSG);
         String name = sc.next();
-        System.out.println(createMsg);
+        System.out.println(CREATE_MSG);
         labelController.create(name);
     }
 
     void update() {
-        System.out.println("Input label id");
+        System.out.println(INPUT_ID_MSG);
         String id = sc.next();
-        System.out.println("Input label name");
+        System.out.println(INPUT_NAME_MSG);
         String name = sc.next();
-        System.out.println(editMsg);
+        System.out.println(EDIT_MSG);
         labelController.update(Long.valueOf(id), name);
     }
 
     void delete() {
-        System.out.println("Input id to delete label");
+        System.out.println(INPUT_ID_TO_DELETE);
         String id = sc.next();
-        System.out.println(deleteMsg);
+        System.out.println(DELETE_MSG);
         labelController.delete(Long.valueOf(id));
     }
 
     void printSelected() {
-        System.out.println("Input label id: ");
+        System.out.println(INPUT_ID_MSG);
         String id = sc.next();
-        System.out.println(displayTargetMsg);
-        System.out.println(labelController.getById(Long.valueOf(id)));
+        System.out.println(DISPLAY_TARGET_MSG);
+        System.out.println(gson.toJson(labelController.getById(Long.valueOf(id))));
     }
 
     void printAll() {
-        System.out.println(displayAllMsg);
-        System.out.println(labelController.getAll());
+        System.out.println(DISPLAY_ALL_MSG);
+        System.out.println(gson.toJson(labelController.getAll()));
     }
 
     void show() {
