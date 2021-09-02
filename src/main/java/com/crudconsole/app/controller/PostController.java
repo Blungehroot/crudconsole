@@ -2,17 +2,17 @@ package com.crudconsole.app.controller;
 
 import com.crudconsole.app.model.Label;
 import com.crudconsole.app.model.Post;
-import com.crudconsole.app.repository.PostRepositoryImpl;
+import com.crudconsole.app.repository.gson.GsonPostRepositoryImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
 public class PostController {
-    PostRepositoryImpl postRepository;
+    GsonPostRepositoryImpl postRepository;
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public PostController(PostRepositoryImpl postRepository) {
+    public PostController(GsonPostRepositoryImpl postRepository) {
         this.postRepository = postRepository;
     }
 

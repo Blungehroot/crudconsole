@@ -1,6 +1,9 @@
 package com.crudconsole.app.helpers;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,8 +13,7 @@ import java.util.stream.Stream;
 public class FileHelpers {
     private static final String TARGET_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/";
 
-    //write data in file
-    public static void WriteInFile(String data, String fileName) {
+    public static void writeInFile(String data, String fileName) {
         if (Files.exists(Path.of(TARGET_DIRECTORY + fileName))) {
             try (FileOutputStream fos = new FileOutputStream(TARGET_DIRECTORY + fileName);
                  OutputStreamWriter oos = new OutputStreamWriter(fos, StandardCharsets.UTF_8)) {
@@ -30,7 +32,6 @@ public class FileHelpers {
         }
     }
 
-    //read data from file
     public static String readFile(String fileName) {
         StringBuilder contentBuilder = new StringBuilder();
         if (Files.exists(Path.of(TARGET_DIRECTORY + fileName))) {
@@ -51,7 +52,6 @@ public class FileHelpers {
         return contentBuilder.toString();
     }
 
-    //create file
     public static void createFile(String fileName) {
         try {
             File file = new File(TARGET_DIRECTORY + fileName);

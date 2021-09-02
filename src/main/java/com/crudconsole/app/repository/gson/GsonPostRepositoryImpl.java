@@ -1,4 +1,4 @@
-package com.crudconsole.app.repository;
+package com.crudconsole.app.repository.gson;
 
 import com.crudconsole.app.helpers.FileHelpers;
 import com.crudconsole.app.model.Post;
@@ -13,10 +13,10 @@ import java.util.Comparator;
 import java.util.List;
 
 @NoArgsConstructor
-public class PostRepositoryImpl {
+public class GsonPostRepositoryImpl {
     private static final String POST_FILE = "posts.json";
 
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private Long generateMaxId(List<Post> allExistingPosts) {
         Long id = Collections.max(allExistingPosts, Comparator.comparing(p -> p.getId())).getId();
@@ -27,7 +27,7 @@ public class PostRepositoryImpl {
         String postsStrings = FileHelpers.readFile(POST_FILE);
         List<Post> posts = gson.fromJson(postsStrings, new TypeToken<List<Post>>() {
         }.getType());
-        return posts.stream().filter(p -> p.getId().equals(id)).findAny().get();
+        return posts.stream().filter(p -> p.getId().equals(id)).findAny().orElse(null);
     }
 
     public List<Post> getAll() {
@@ -49,17 +49,17 @@ public class PostRepositoryImpl {
             posts.add(post);
         }
         String jsonString = gson.toJson(posts);
-        FileHelpers.WriteInFile(jsonString, POST_FILE);
+        FileHelpers.writeInFile(jsonString, POST_FILE);
     }
 
     public void update(Post post) {
         String postsStrings = FileHelpers.readFile(POST_FILE);
         List<Post> labels = gson.fromJson(postsStrings, new TypeToken<List<Post>>() {
         }.getType());
-        Post post1 = labels.stream().filter(l -> l.getId().equals(post.getId())).findAny().get();
+        Post post1 = labels.stream().filter(l -> l.getId().equals(post.getId())).findAny().orElse(null);
         post1.setName(post.getName());
         String jsonString = gson.toJson(labels);
-        FileHelpers.WriteInFile(jsonString, POST_FILE);
+        FileHelpers.writeInFile(jsonString, POST_FILE);
     }
 
     public void delete(Long id) {
@@ -68,6 +68,6 @@ public class PostRepositoryImpl {
         }.getType());
         posts.removeIf(post -> post.getId().equals(id));
         String jsonString = gson.toJson(posts);
-        FileHelpers.WriteInFile(jsonString, POST_FILE);
+        FileHelpers.writeInFile(jsonString, POST_FILE);
     }
 }
