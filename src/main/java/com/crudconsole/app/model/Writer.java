@@ -10,5 +10,4 @@ public class Writer implements Serializable {
     private Long id;
     private String name;
     private List<Post> posts;
-
 }

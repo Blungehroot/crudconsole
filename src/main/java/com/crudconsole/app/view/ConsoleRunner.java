@@ -2,20 +2,21 @@ package com.crudconsole.app.view;
 
 import com.crudconsole.app.controller.LabelController;
 import com.crudconsole.app.controller.PostController;
-import com.crudconsole.app.repository.gson.GsonLabelRepositoryImpl;
-import com.crudconsole.app.repository.gson.GsonPostRepositoryImpl;
+import com.crudconsole.app.controller.WriterController;
 
 import java.util.Scanner;
 
 public class ConsoleRunner {
     private final LabelView labelView;
     private final PostView postView;
+    private final WriterView writerView;
 
     private Scanner sc = new Scanner(System.in);
     private static final String msg = "Select action:\n" +
             "1. Actions with labels.\n" +
             "2. Actions with posts.\n" +
-            "3. Exit.";
+            "3. Actions with writers.\n" +
+            "4. Exit.";
 
     public ConsoleRunner() {
         LabelController labelController = new LabelController();
@@ -23,15 +24,17 @@ public class ConsoleRunner {
 
         PostController postController = new PostController();
         postView = new PostView(postController, sc);
+
+        WriterController writerController = new WriterController();
+        writerView = new WriterView(writerController, sc);
     }
 
-    public void run()  {
+    public void run() {
         boolean isExit = false;
         System.out.println(msg);
         while (true) {
             String action = sc.next();
-            switch (action)
-            {
+            switch (action) {
                 case "1":
                     labelView.show();
                     System.out.println(msg);
@@ -41,6 +44,10 @@ public class ConsoleRunner {
                     System.out.println(msg);
                     break;
                 case "3":
+                    writerView.show();
+                    System.out.println(msg);
+                    break;
+                case "4":
                     isExit = true;
                     break;
                 default:

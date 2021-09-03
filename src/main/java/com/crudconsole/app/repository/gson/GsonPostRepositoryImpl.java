@@ -2,6 +2,7 @@ package com.crudconsole.app.repository.gson;
 
 import com.crudconsole.app.helpers.FileHelpers;
 import com.crudconsole.app.model.Post;
+import com.crudconsole.app.repository.PostRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -13,13 +14,13 @@ import java.util.Comparator;
 import java.util.List;
 
 @NoArgsConstructor
-public class GsonPostRepositoryImpl {
+public class GsonPostRepositoryImpl implements PostRepository {
     private static final String POST_FILE = "posts.json";
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private Long generateMaxId(List<Post> allExistingPosts) {
-        Long id = Collections.max(allExistingPosts, Comparator.comparing(p -> p.getId())).getId();
+        Long id = Collections.max(allExistingPosts, Comparator.comparing(Post::getId)).getId();
         return id + 1;
     }
 
